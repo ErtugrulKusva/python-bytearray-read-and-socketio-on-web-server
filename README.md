@@ -58,4 +58,6 @@ Programın çalışması hiyerarşik olarak aşağıda verilmiştir.
 8)Değişkenlere aktarılan verilerin socketio ile web server üzerine gönderilmesi
 
 9)Web serverin gelen verileri arayüzde görünür hale getirilmesi
+
+
 ![program screenshot](python_serial_read.png)
