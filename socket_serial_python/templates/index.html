@@ -1,0 +1,140 @@
+		{% include "header.html" %}
+	
+	 			<script type="text/javascript" charset="utf-8">
+                namespace = '/seriGonder';
+             	var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+				//var socket = io();
+			function imageDegistir() {
+                 var img=document.getElementById("myimage");
+                 if (img.src.indexOf("yess") >= 0 ) {
+                     img.src="images/kirs.png";
+					 socket.emit('buttonGonder', {'buttonSec':'web','butonDurum': '1'});
+					 //console.log("evet");
+                 } else {
+                  img.src="images/yess.png";
+
+					 socket.emit('buttonGonder', {'buttonSec':'web','butonDurum': '0'});
+					 //console.log("hayır");
+					 }
+                    }
+            socket.on('connect', function() {
+			    console.log("baglandı")
+                socket.emit('my_event', {data: 'I\'m connected!'});
+            });
+
+       			  socket.on('seribas', function(msg) {
+				 //console.log("aa",msg.data);
+				 var gaugetemperature = document.getElementsByTagName('canvas')[0];
+				  gaugetemperature.setAttribute('data-value', msg.temperature );
+				 var gaugehumidity = document.getElementsByTagName('canvas')[1];
+				  gaugehumidity.setAttribute('data-value', msg.humidity );
+				 var gaugespeed = document.getElementsByTagName('canvas')[2];
+				  gaugespeed.setAttribute('data-value', msg.speed );
+				 var gaugeheight = document.getElementsByTagName('canvas')[3];
+				  gaugeheight.setAttribute('data-value', msg.height );
+				  gaugePS.value = msg.pressure ;
+					  
+                //$('#log').text(msg.data).html();
+            });
+			 socket.on('news', function(msg) {
+
+                $('#veriler').text(msg.data).html();
+            });
+			 socket.on('my_response1', function(msg) {
+                console.log("data:",msg.data);
+				
+				 if (msg.data == '0') {
+					$('#my_image').attr('src','images/offled.png');
+				 } else {
+					 $('#my_image').attr('src','images/onled.png');
+				 }
+
+            });
+
+            $('form#close').submit(function(event) {
+                socket.emit('close_room', {room: $('#close_room').val()});
+                return false;
+            });
+            $('form#disconnect').submit(function(event) {
+                socket.emit('disconnect_request');
+                return false;
+            });
+
+
+    </script>
+		<!-- One -->
+
+            
+          			<div id="categories-selections" class="container-fluid">
+          				<div class="row top-buffer">
+          					
+          					<div class="col-md-2 col-md-offset-1 no-padding">
+          						<div class="pricing-box-alt">
+          							<div class="pricing-heading">
+          								<h5 id="log">Temperature</h5>
+          							</div>
+          							<div class="pricing-content">
+          		   	{% include "radial-gauge-sicaklik.html" %}
+          							</div>
+          						</div>
+          					</div>
+                    <div class="col-md-2 no-padding">
+                      <div class="pricing-box-alt">
+                        <div class="pricing-heading">
+                          <h5>Humidity</h5>
+                        </div>
+                        <div class="pricing-content">						
+                {% include "radial-gauge-nem.html" %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 no-padding">
+                      <div class="pricing-box-alt">
+                        <div class="pricing-heading">
+                          <h5>Speed</h5>
+                        </div>
+                        <div class="pricing-content">
+                {% include "radial-gauge-hiz.html" %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 no-padding">
+                      <div class="pricing-box-alt">
+                        <div class="pricing-heading">
+                          <h5>Height</h5>
+                        </div>
+                        <div class="pricing-content">
+                {% include "radial-gauge-yukseklik.html" %}
+                        </div>
+                      </div>
+                    </div>
+                         <div class="col-md-2 no-padding">
+                      <div class="pricing-box-alt">
+                        <div class="pricing-heading">
+                          <h5>Pressure</h5>
+                        </div>
+                        <div class="pricing-content">
+                {% include "radial-gauge-basinc.html" %}
+                        </div>
+                      </div>
+                    </div>
+                   
+                  
+          				</div>
+          				</div>
+          
+          	
+			<!-- Footer -->
+			   
+
+		</body>
+</html>
+
+	<!-- Placed at the end of the document so the pages load faster -->
+	
+	<script src="jsmanage/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>
